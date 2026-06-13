@@ -8,6 +8,7 @@ import org.hibernate.annotations.Fetch;
 
 
 @Entity
+@Table(name = "audit_logs")
 @Getter
 @Setter
 @NoArgsConstructor

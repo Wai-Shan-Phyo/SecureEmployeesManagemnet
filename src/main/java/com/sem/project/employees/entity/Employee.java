@@ -45,7 +45,7 @@ public class Employee extends BaseEntity {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name="manager_id" )
-    private Employee employee;
+    private Employee manager;  // Manager Self reference
 
     @Column(name = "hire_date", nullable = false)
     private LocalDate hireDate;
