@@ -15,6 +15,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 
 @RequiredArgsConstructor
@@ -60,16 +61,24 @@ public class EmployeeServiceImpl implements EmployeeService {
 
     @Override
     public EmployeeResponse getEmployeeById(Long id) {
-        return null;
+        Employee employee = employeeRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Employee not found with id: " + id));
+        return employeeMapper.toResponse(employee);
     }
 
     @Override
     public List<EmployeeResponse> getAllEmployees() {
-        return List.of();
+        List<Employee> employees = employeeRepository.findAll();
+        return employees.stream()
+                .map(employeeMapper::toResponse)
+                .collect(Collectors.toList());
     }
 
     @Override
     public void deleteEmployee(Long id) {
-
+     if(!employeeRepository.existsById(id)){
+         throw  new ResourceNotFoundException("employee not found");
+     }
+     employeeRepository.deleteById(id);
     }
 }

@@ -42,7 +42,7 @@ public class EmployeeController {
          );
     }
 
-    @GetMapping
+    @GetMapping("/getEmployees")
     public ResponseEntity<ApiResponse<List<EmployeeResponse>>> getAllEmployees(){
        List<EmployeeResponse> response = employeeService.getAllEmployees();
         return ResponseEntity.ok(
