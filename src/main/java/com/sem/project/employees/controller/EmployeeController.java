@@ -1,13 +1,17 @@
 package com.sem.project.employees.controller;
 
 import com.sem.project.common.response.ApiResponse;
+import com.sem.project.common.security.CurrentUserService;
 import com.sem.project.employees.dto.EmployeeCreateRequest;
 import com.sem.project.employees.dto.EmployeeResponse;
+import com.sem.project.employees.entity.Employee;
+import com.sem.project.employees.mapper.EmployeeMapper;
 import com.sem.project.employees.service.EmployeeService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -17,7 +21,8 @@ import java.util.List;
 @RequiredArgsConstructor
 public class EmployeeController {
     private final EmployeeService employeeService;
-
+    private final CurrentUserService currentUserService;
+    private final EmployeeMapper employeeMapper;
     @PostMapping
     public ResponseEntity<ApiResponse<EmployeeResponse>> createEmployee( @Valid @RequestBody EmployeeCreateRequest createRequest){
         EmployeeResponse response = employeeService.createEmployee(createRequest);
@@ -67,5 +72,12 @@ public class EmployeeController {
                         .build()
         );
     }
+
+    @GetMapping("/me")
+    public EmployeeResponse me(Authentication authentication){
+        Employee employee =  currentUserService.getCurrentEmployee(authentication);
+        return employeeMapper.toResponse(employee);
+    }
+
 
 }
