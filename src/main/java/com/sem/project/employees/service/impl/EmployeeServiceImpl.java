@@ -1,5 +1,6 @@
 package com.sem.project.employees.service.impl;
 
+import com.sem.project.audit.service.AuditService;
 import com.sem.project.common.exception.ResourceNotFoundException;
 import com.sem.project.departments.entity.Department;
 import com.sem.project.departments.repository.DepartmentRepository;
@@ -25,6 +26,7 @@ public class EmployeeServiceImpl implements EmployeeService {
     private final PositionRepository positionRepository;
     private final EmployeeRepository employeeRepository;
     private final EmployeeMapper employeeMapper;
+    private final AuditService auditService;
 
    @Override
    public EmployeeResponse createEmployee(EmployeeCreateRequest request){
@@ -55,6 +57,14 @@ public class EmployeeServiceImpl implements EmployeeService {
                  .build();
        Employee saved =
                employeeRepository.save(employee);
+       auditService.log(
+               "CREATE_EMPLOYEE",
+               "Employee",
+               saved.getId(),
+               "Employee "
+                       + saved.getEmployeeCode()
+                       + " created"
+       );
        return employeeMapper
                .toResponse(saved);
    }
@@ -79,6 +89,13 @@ public class EmployeeServiceImpl implements EmployeeService {
      if(!employeeRepository.existsById(id)){
          throw  new ResourceNotFoundException("employee not found");
      }
+
      employeeRepository.deleteById(id);
+        auditService.log(
+                "DELETE_EMPLOYEE",
+                "Employee",
+                id,
+                "Employee deleted"
+        );
     }
 }

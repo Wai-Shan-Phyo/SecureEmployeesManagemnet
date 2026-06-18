@@ -74,8 +74,8 @@ public class EmployeeController {
     }
 
     @GetMapping("/me")
-    public EmployeeResponse me(Authentication authentication){
-        Employee employee =  currentUserService.getCurrentEmployee(authentication);
+    public EmployeeResponse me(){
+        Employee employee =  currentUserService.getCurrentEmployee();
         return employeeMapper.toResponse(employee);
     }
 
