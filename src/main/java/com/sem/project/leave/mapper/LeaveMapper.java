@@ -5,17 +5,19 @@ import com.sem.project.leave.entity.Leave;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 
+import java.time.Instant;
+import java.time.OffsetDateTime;
+
 @Mapper(componentModel = "spring")
 public interface LeaveMapper {
-   @Mapping(
-           target="employeeName",
-           expression = "java(leave.getEmployee().getFirstName() + \\\" \\\" + leave.getEmployee().getLastName())"
-   )
-   @Mapping(
-           target = "approvedBy",
-           expression =
-                   "java(leave.getApprovedBy() != null ? leave.getApprovedBy().getFirstName() + \" \" + leave.getApprovedBy().getLastName() : null)"
-   )
+    @Mapping(
+            target = "employeeName",
+            expression = "java(leave.getEmployee() != null ? leave.getEmployee().getFirstName() + \" \" + leave.getEmployee().getLastName() : null)"
+    )
+    @Mapping(
+            target = "approvedBy",
+            expression = "java(leave.getApprovedBy() != null ? leave.getApprovedBy().getFirstName() + \" \" + leave.getApprovedBy().getLastName() : null)"
+    )
   // MapStruct က အလိုအလျောက် ထုတ်ပေးမယ့် code ပုံစံအကြမ်းဖျင်း
 //@Component
 //public class LeaveMapperImpl implements LeaveMapper {
@@ -40,4 +42,7 @@ public interface LeaveMapper {
   LeaveResponse toResponse(
           Leave leave
   );
+    default Instant map(OffsetDateTime value) {
+        return value != null ? value.toInstant() : null;
+    }
 }

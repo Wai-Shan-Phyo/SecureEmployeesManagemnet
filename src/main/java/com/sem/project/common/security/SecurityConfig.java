@@ -30,8 +30,30 @@ public class SecurityConfig {
 
 
                         ).hasRole("ADMIN")
+                        .requestMatchers(
+                                HttpMethod.POST,
+                                "/api/leaves")
+                        .hasRole("EMPLOYEE")
 
+                        .requestMatchers(
+                                HttpMethod.GET,
+                                "/api/leaves/my")
+                        .hasRole("EMPLOYEE")
 
+                        .requestMatchers(
+                                HttpMethod.GET,
+                                "/api/leaves/pending")
+                        .hasRole("MANAGER")
+
+                        .requestMatchers(
+                                HttpMethod.POST,
+                                "/api/leaves/*/approve")
+                        .hasRole("MANAGER")
+
+                        .requestMatchers(
+                                HttpMethod.POST,
+                                "/api/leaves/*/reject")
+                        .hasRole("MANAGER")
                         .anyRequest()
                         .authenticated()
                 )
