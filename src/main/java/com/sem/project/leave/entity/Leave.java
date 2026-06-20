@@ -46,8 +46,9 @@ public class Leave extends BaseEntity {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "approved_by")
-    private Employee approveBy; //Manager who approve by
+    private Employee approvedBy;// Manager who approved the leave
 
     @Column(name = "approved_at")
     private OffsetDateTime approvedAt;
 }
+

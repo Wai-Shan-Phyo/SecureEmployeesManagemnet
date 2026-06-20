@@ -10,6 +10,7 @@ import com.sem.project.employees.entity.Employee;
 import com.sem.project.employees.mapper.EmployeeMapper;
 import com.sem.project.employees.repository.EmployeeRepository;
 import com.sem.project.employees.service.EmployeeService;
+import com.sem.project.audit.enums.AuditAction;
 import com.sem.project.position.entity.Position;
 import com.sem.project.position.repository.PositionRepository;
 import lombok.RequiredArgsConstructor;
@@ -58,7 +59,7 @@ public class EmployeeServiceImpl implements EmployeeService {
        Employee saved =
                employeeRepository.save(employee);
        auditService.log(
-               "CREATE_EMPLOYEE",
+               AuditAction.CREATE_EMPLOYEE,
                "Employee",
                saved.getId(),
                "Employee "
@@ -92,7 +93,7 @@ public class EmployeeServiceImpl implements EmployeeService {
 
      employeeRepository.deleteById(id);
         auditService.log(
-                "DELETE_EMPLOYEE",
+                AuditAction.DELETE_EMPLOYEE,
                 "Employee",
                 id,
                 "Employee deleted"
